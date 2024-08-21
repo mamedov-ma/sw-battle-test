@@ -7,8 +7,8 @@
 #include "unitRepository.hpp"
 #include "units.hpp"
 
-#include <limits>
 #include <algorithm>
+#include <limits>
 
 namespace sw::actions
 {
@@ -28,8 +28,8 @@ bool RangeAttack::tryRangeAttack(units::Unit* unit)
     {
         for (uint32_t y = pos.y - range; y <= pos.y + range; ++y)
         {
-            if (x >= 0 && x < map.getWidth() && y >= 0 && y < map.getHeight() && map.getCell({x, y}) != unit->getId() &&
-                map.isCellOccupied({x, y}) && unit->getRepo().getUnit(map.getCell({x, y}))->isAlive() && abs(x - pos.x) > 1 && abs(y - pos.y) > 1)
+            if (x < map.getWidth() && y < map.getHeight() && map.getCell({x, y}) != unit->getId() && map.isCellOccupied({x, y}) &&
+                unit->getRepo().getUnit(map.getCell({x, y}))->isAlive() && abs(x - pos.x) > 1 && abs(y - pos.y) > 1)
             {
                 uint32_t currentTargetId = map.getCell({x, y});
                 uint32_t distance = std::max(abs(x - pos.x), abs(y - pos.y));
@@ -87,8 +87,7 @@ bool MeleeAttack::tryMeleeAttack(units::Unit* unit)
     {
         uint32_t x = cell.first;
         uint32_t y = cell.second;
-        if (x >= 0 && x < map.getWidth() && y >= 0 && y < map.getHeight() &&
-            map.isCellOccupied({x, y}) && unit->getRepo().getUnit(map.getCell({x, y}))->isAlive())
+        if (x < map.getWidth() && y < map.getHeight() && map.isCellOccupied({x, y}) && unit->getRepo().getUnit(map.getCell({x, y}))->isAlive())
         {
             uint32_t currentTargetId = map.getCell({x, y});
             if (unit->getRepo().getUnit(currentTargetId)->getHp() < minHp)
